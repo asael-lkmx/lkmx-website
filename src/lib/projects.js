@@ -1,10 +1,10 @@
 import fs from 'fs'
-import path from 'path'
+import { join } from 'path'
 import { remark } from 'remark';
 import html from 'remark-html';
 import matter from 'gray-matter'
 
-const projectsDirectory = path.join(process.cwd(), 'src/projects');
+const projectsDirectory = join(process.cwd(), 'src', 'projects');
 const defaultLocale = 'es';
 
 export function getSortedProjectsData(locale) {
@@ -14,7 +14,7 @@ export function getSortedProjectsData(locale) {
   const allProjectsData = fileNames.map(id => {
     const filename = locale === defaultLocale ? 'index.md' : `index.${locale}.md`;
 
-    const fullPath = path.join(projectsDirectory, id, filename);
+    const fullPath = join(projectsDirectory, id, filename);
     const fileContents = fs.readFileSync(fullPath, 'utf8')
 
     const matterResult = matter(fileContents)
@@ -33,7 +33,7 @@ export function getSortedProjectsData(locale) {
 
 export async function getProjectData(id, locale) {
 
-  const fullPath = path.join(
+  const fullPath = join(
     projectsDirectory,
     id,
     locale === defaultLocale ? 'index.md' : `index.${locale}.md`,
@@ -60,7 +60,7 @@ export function getAllProjectIds(locales) {
   for(let id of projectIds) {
     for(let locale of locales) {
 
-      let fullpath = path.join(
+      let fullpath = join(
         projectsDirectory,
         id,
         locale === defaultLocale ? 'index.md' : `index.${locale}.md`,
